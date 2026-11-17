@@ -16,6 +16,41 @@ class base
         this->name = new char[size + 1];
         strcpy(this->name, name);
     }
+    base(const base &obj):y(obj.y),ref(obj.ref)
+    {
+        rollNumber = obj.rollNumber;
+        ptr = new int;
+        *ptr = *(obj.ptr);
+        int size = strlen(obj.name);
+        name = new char[size + 1];
+        strcpy(name, obj.name);
+    }
+    ~base(){
+        delete ptr;
+        delete []name;
+        cout << "Destructor called for base class" << endl;
+    }
+    base operator=(const base &obj){
+        if(this != &obj){
+            rollNumber = obj.rollNumber;
+            *ptr = *(obj.ptr);
+            int size = strlen(obj.name);
+            delete []name;
+            name = new char[size + 1];
+            strcpy(name, obj.name);
+        }
+        return *this;
+    }
+    //move constructor
+    base(base &&obj):y(obj.y),ref(obj.ref)
+    {
+        rollNumber = obj.rollNumber;
+        ptr = obj.ptr;
+        name = obj.name;
+        obj.ptr = nullptr;
+        obj.name = nullptr;
+    }
+
     void display()
     {   cout << "Roll Number: " << rollNumber << endl;
         cout << "Pointer Value: " << *ptr << endl;
